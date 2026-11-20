@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controller's AI ROI Audit &amp; "50 That Matter" Scorer | JPMorganChase Playbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0B132B;
+      --navy-2: #131F3D;
+      --light: #F8FAFC;
+      --card: #FFFFFF;
+      --border: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --ink: #0F172A;
+      --ink-muted: #475569;
+      --teal: #0F766E;
+      --teal-bright: #14B8A6;
+      --teal-soft: #F0FDFA;
+      --teal-border: #99F6E4;
+      --blue: #2563EB;
+      --blue-soft: #EFF6FF;
+      --amber: #D97706;
+      --amber-soft: #FFFBEB;
+      --red: #B91C1C;
+      --red-soft: #FEF2F2;
+      --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Cascadia Mono', 'Consolas', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--light);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar {
+      background:
+        radial-gradient(circle at 86% 18%, rgba(20, 184, 166, 0.2), transparent 44%),
+        var(--navy);
+      color: #F8FAFC;
+      padding: 28px 24px 30px;
+      border-bottom: 3px solid var(--teal-bright);
+    }
+
+    .container { max-width: 1120px; margin: 0 auto; }
+
+    .top-flex {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal-bright);
+      background: rgba(20, 184, 166, 0.14);
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: #CBD5E1;
+      font-size: 15px;
+      max-width: 700px;
+    }
+
+    .action-bar { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.16s ease, background-color 0.16s ease;
+    }
+
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--teal-bright); color: #06211E; }
+    .btn-primary:hover { background: #2DD4BF; }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.08);
+      color: #F8FAFC;
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.15); }
+
+    main.container { padding: 24px 24px 56px; }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 22px;
+      background: #E2E8F0;
+      padding: 6px;
+      border-radius: 14px;
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: var(--card);
+      color: var(--ink);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    .tab-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .panel-section { display: none; }
+    .panel-section.active { display: block; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .card-kicker {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-top: 2px;
+      margin-bottom: 16px;
+    }
+
+    .sub-group-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      padding: 8px 0 6px;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .control-row { margin-bottom: 15px; }
+
+    .control-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .val-badge {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue);
+      background: var(--blue-soft);
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      accent-color: var(--teal);
+      cursor: pointer;
+    }
+
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .preset-btn {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-strong);
+      background: #F8FAFC;
+      color: var(--ink-muted);
+      cursor: pointer;
+    }
+
+    .preset-btn.active {
+      background: var(--teal-soft);
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .disclaimer {
+      margin-top: 12px;
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 13px;
+    }
+
+    .soft-alert {
+      background: var(--amber-soft);
+      border: 1.5px solid #FCD34D;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .soft-alert-lbl {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #92400E;
+      text-transform: uppercase;
+    }
+
+    .soft-alert-sub { font-size: 12px; color: #78350F; margin-top: 2px; }
+
+    .soft-alert-num {
+      font-family: var(--font-mono);
+      font-size: 24px;
+      font-weight: 800;
+      color: #B45309;
+      text-decoration: line-through;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-box {
+      background: var(--navy);
+      color: #F8FAFC;
+      border-radius: 14px;
+      padding: 15px 14px;
+      border: 1px solid var(--navy-2);
+    }
+
+    .kpi-box.accent { border-color: var(--teal-bright); }
+
+    .kpi-lbl {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #94A3B8;
+    }
+
+    .kpi-num {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--teal-bright);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      margin-top: 6px;
+      line-height: 1.15;
+    }
+
+    .kpi-box.blue .kpi-num { color: #60A5FA; }
+    .kpi-sub { font-size: 11.5px; color: #CBD5E1; margin-top: 4px; }
+
+    .chart-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px 18px;
+      margin-bottom: 16px;
+    }
+
+    .chart-title {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .bottleneck-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .b-btn {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-strong);
+      background: #FFFFFF;
+      color: var(--ink-muted);
+      cursor: pointer;
+      text-align: left;
+      line-height: 1.3;
+    }
+
+    .b-btn.active {
+      background: var(--teal-soft);
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .b-card {
+      background: var(--teal-soft);
+      border: 1.5px solid var(--teal-border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .b-card-title { font-size: 14.5px; font-weight: 800; color: var(--teal); margin-bottom: 5px; }
+    .b-card-body { font-size: 13.5px; color: var(--ink); line-height: 1.48; }
+
+    /* Tab 2 Gates */
+    .gate-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .gate-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .gate-title { font-size: 15px; font-weight: 800; color: var(--ink); }
+    .gate-desc { font-size: 13px; color: var(--ink-muted); margin-top: 3px; }
+
+    .seg-group {
+      display: inline-flex;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .seg-opt {
+      border: none;
+      background: #F8FAFC;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 7px 11px;
+      cursor: pointer;
+      border-right: 1px solid var(--border-strong);
+    }
+
+    .seg-opt:last-child { border-right: none; }
+    .seg-opt.s0.active { background: var(--red-soft); color: var(--red); }
+    .seg-opt.s1.active { background: var(--amber-soft); color: var(--amber); }
+    .seg-opt.s2.active { background: var(--teal); color: #FFFFFF; }
+
+    .gauge-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .gauge-box {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      flex-shrink: 0;
+    }
+
+    .gauge-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gauge-pct {
+      font-family: var(--font-mono);
+      font-size: 30px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .gauge-pts { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-muted); }
+
+    .tier-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .priority-box {
+      background: var(--navy);
+      color: #F8FAFC;
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-top: 16px;
+    }
+
+    .priority-head {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--teal-bright);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .priority-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: #E2E8F0;
+    }
+
+    .priority-list li { display: flex; gap: 8px; }
+    .priority-list li span.num { font-family: var(--font-mono); color: var(--teal-bright); font-weight: 700; }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      background: var(--navy);
+      color: #F8FAFC;
+      border: 1.5px solid var(--teal-bright);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 99;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 880px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .kpi-trio { grid-template-columns: 1fr; }
+      .bottleneck-tabs { grid-template-columns: 1fr; }
+      .tabs { width: 100%; }
+      .tab-btn { flex: 1; justify-content: center; font-size: 13px; padding: 10px; }
+    }
+
+    @media print {
+      .tabs, .action-bar, .toast { display: none !important; }
+      .panel-section { display: block !important; margin-bottom: 28px; page-break-inside: avoid; }
+      body { background: #FFFFFF; }
+      .topbar { background: #0B132B !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container top-flex">
+      <div>
+        <div class="kicker">JPMORGANCHASE FINANCE AI PLAYBOOK COMPANION</div>
+        <h1>Controller's AI ROI Audit &amp; "50 That Matter" Scorer</h1>
+        <p class="subtitle">
+          Expose vague "hours saved" vendor hype versus auditable unit-cost P&amp;L math—and gate every AI workflow against 6 controller controls.
+        </p>
+      </div>
+      <div class="action-bar">
+        <button id="btn-copy" class="btn btn-primary" type="button">Copy Controller Audit Memo</button>
+        <button id="btn-print" class="btn btn-ghost" type="button">Print / Save PDF Memo</button>
+        <button id="btn-reset" class="btn btn-ghost" type="button">Reset Defaults</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tabs" role="tablist">
+      <button id="tab-btn-1" class="tab-btn active" type="button" data-tab="tab-1">
+        1. Soft Claim vs. Hard Unit ROI <span id="tab-pill-net" class="tab-pill">$264,000 net</span>
+      </button>
+      <button id="tab-btn-2" class="tab-btn" type="button" data-tab="tab-2">
+        2. "50 That Matter" Control Scorer <span id="tab-pill-score" class="tab-pill">50%</span>
+      </button>
+    </div>
+
+    <!-- TAB 1 -->
+    <section id="tab-1" class="panel-section active">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-kicker">Inputs • Vendor Pitch vs. Operational Baseline</div>
+          <h2 class="card-title">Stress-Test Your AI Business Case</h2>
+
+          <div class="sub-group-label" style="border-top:none; margin-top:0;">A. Vendor "Soft Hours Saved" Pitch (Uncredited)</div>
+
+          <div class="control-row">
+            <div class="control-head">
+              <label for="in-staff">Employees Using AI Tool</label>
+              <span id="out-staff" class="val-badge">150 staff</span>
+            </div>
+            <input id="in-staff" type="range" min="10" max="500" step="10" value="150" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-head">
+              <label for="in-hrs">Vendor-Claimed Self-Reported Hrs / Wk</label>
+              <span id="out-hrs" class="val-badge">4 hrs/wk</span>
+            </div>
+            <input id="in-hrs" type="range" min="1" max="10" step="1" value="4" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-head">
+              <label for="in-rate">Blended Hourly Cost (48 wks/yr)</label>
+              <span id="out-rate" class="val-badge">$80 / hr</span>
+            </div>
+            <input id="in-rate" type="range" min="35" max="200" step="5" value="80" />
+          </div>
+
+          <div class="sub-group-label">B. Hard Unit-Cost Operational Math (Controller-Credited)</div>
+
+          <div class="control-row">
+            <div class="control-head">
+              <label for="in-vol">Monthly Transaction / Document Volume</label>
+              <span id="out-vol" class="val-badge">50,000 / mo</span>
+            </div>
+            <input id="in-vol" type="range" min="5000" max="250000" step="5000" value="50000" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-head">
+              <label for="in-unit">Baseline Processing Cost per Unit</label>
+              <span id="out-unit" class="val-badge">$1.60</span>
+            </div>
+            <input id="in-unit" type="range" min="0.5" max="10.0" step="0.1" value="1.6" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-head">
+              <label for="in-spend">Annual Software + Governance Cost</label>
+              <span id="out-spend" class="val-badge">$120,000</span>
+            </div>
+            <input id="in-spend" type="range" min="10000" max="500000" step="10000" value="120000" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-head">
+              <label for="in-pct">Auditable Unit-Cost Reduction</label>
+              <span id="out-pct" class="val-badge">40%</span>
+            </div>
+            <input id="in-pct" type="range" min="10" max="90" step="5" value="40" />
+            <div class="preset-row">
+              <button class="preset-btn active" type="button" data-preset="40">JPM KYC Benchmark -40%</button>
+              <button class="preset-btn" type="button" data-preset="50">Prysmian Prep -50%</button>
+              <button class="preset-btn" type="button" data-preset="80">SpectrumIQ Research -80%</button>
+            </div>
+          </div>
+
+          <div class="disclaimer">
+            <strong>Benchmark Note:</strong> Presets reflect JPMorganChase 2025 Annual Report &amp; Investor Day disclosures (nearly -40% KYC unit cost, -50% Prysmian cash prep, -80% SpectrumIQ research time) as editable reference benchmarks, not guarantees.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-kicker">Outputs • Audit Verdict</div>
+          <h2 class="card-title">Paper Hype vs. Auditable P&amp;L Return</h2>
+
+          <div class="soft-alert">
+            <div>
+              <div class="soft-alert-lbl">Uncredited Soft Paper ROI (Jamie Dimon Rule)</div>
+              <div class="soft-alert-sub">Excluded from budget credit because self-reported hours are too vague</div>
+            </div>
+            <div id="kpi-soft" class="soft-alert-num">$2,304,000</div>
+          </div>
+
+          <div class="kpi-trio">
+            <div class="kpi-box accent">
+              <div class="kpi-lbl">Net Hard ROI</div>
+              <div id="kpi-net" class="kpi-num">$264,000</div>
+              <div class="kpi-sub">credited annual P&amp;L</div>
+            </div>
+            <div class="kpi-box blue">
+              <div class="kpi-lbl">Gross Unit Savings</div>
+              <div id="kpi-gross" class="kpi-num">$384,000</div>
+              <div class="kpi-sub">verified unit reduction</div>
+            </div>
+            <div class="kpi-box">
+              <div class="kpi-lbl">Payback Period</div>
+              <div id="kpi-payback" class="kpi-num">3.8 mos</div>
+              <div class="kpi-sub">on hard cash return</div>
+            </div>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-title">Annual Comparison: Soft Paper Claim vs. Hard Unit Economics</div>
+            <svg viewBox="0 0 480 142" width="100%" aria-label="Soft vs Hard ROI Chart">
+              <text x="0" y="18" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#92400E">Uncredited Soft "Hours Saved" Claim</text>
+              <text id="svg-lbl-soft" x="480" y="18" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#B45309">$2,304,000</text>
+              <rect x="0" y="25" width="480" height="14" rx="7" fill="#E2E8F0" />
+              <rect id="svg-bar-soft" x="0" y="25" width="480" height="14" rx="7" fill="#D97706" />
+
+              <text x="0" y="64" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#0F766E">Auditable Gross Unit-Cost Savings</text>
+              <text id="svg-lbl-gross" x="480" y="64" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#0F766E">$384,000</text>
+              <rect x="0" y="71" width="480" height="14" rx="7" fill="#E2E8F0" />
+              <rect id="svg-bar-gross" x="0" y="71" width="80" height="14" rx="7" fill="#0F766E" />
+
+              <text x="0" y="110" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#0F172A">Annual Software + Governance Spend</text>
+              <text id="svg-lbl-spend" x="480" y="110" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="#475569">$120,000</text>
+              <rect x="0" y="117" width="480" height="14" rx="7" fill="#E2E8F0" />
+              <rect id="svg-bar-spend" x="0" y="117" width="25" height="14" rx="7" fill="#2563EB" />
+            </svg>
+          </div>
+
+          <div>
+            <div class="card-kicker" style="margin-bottom: 8px;">Select High-Volume Bottleneck Pattern</div>
+            <div class="bottleneck-tabs">
+              <button class="b-btn active" type="button" data-bn="1">(1) Lower Unit Cost (KYC / AP)</button>
+              <button class="b-btn" type="button" data-bn="2">(2) Cash-Flow &amp; Research Prep</button>
+              <button class="b-btn" type="button" data-bn="3">(3) Screening &amp; Fraud Controls</button>
+            </div>
+            <div class="b-card">
+              <div id="bn-title" class="b-card-title">Pattern: Precision ML + Workflow Automation (-40% Unit Cost)</div>
+              <div id="bn-body" class="b-card-body">
+                Pair predictive machine learning with targeted LLMs inside high-volume compliance or invoice workflows to strip out false positives before human review—tracking exact cost per unit processed.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2 -->
+    <section id="tab-2" class="panel-section">
+      <div class="grid-2">
+        <div id="gates-container"></div>
+
+        <div class="card">
+          <div class="card-kicker">Assessment • Portfolio &amp; Control Discipline</div>
+          <h2 class="card-title">"50 That Matter" Readiness Verdict</h2>
+
+          <div class="gauge-header">
+            <div class="gauge-box">
+              <svg width="128" height="128" viewBox="0 0 128 128">
+                <circle cx="64" cy="64" r="52" fill="none" stroke="#E2E8F0" stroke-width="12" />
+                <circle id="sc-arc" cx="64" cy="64" r="52" fill="none" stroke="#D97706" stroke-width="12" stroke-linecap="round"
+                  stroke-dasharray="326.73" stroke-dashoffset="163.36" transform="rotate(-90 64 64)" />
+              </svg>
+              <div class="gauge-center">
+                <div id="sc-pct" class="gauge-pct">50%</div>
+                <div id="sc-pts" class="gauge-pts">6 / 12 pts</div>
+              </div>
+            </div>
+
+            <div>
+              <div id="sc-tier" class="tier-pill" style="background:#FEF3C7; color:#92400E;">Needs Control Gates</div>
+              <p id="sc-summary" style="font-size: 13.5px; color: var(--ink-muted);">
+                Unit math may look promising, but missing opt-in demand or perimeter gates expose the business case to audit risk.
+              </p>
+            </div>
+          </div>
+
+          <div class="priority-box">
+            <div class="priority-head">Top 3 Controller Action Items Before Sign-Off</div>
+            <ul id="priority-list" class="priority-list"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">Controller Audit Memo copied to clipboard</div>
+
+  <script>
+    const state = {
+      staff: 150,
+      hrs: 4,
+      rate: 80,
+      vol: 50000,
+      unit: 1.6,
+      spend: 120000,
+      pct: 40,
+      bottleneck: '1',
+      scores: [2, 1, 1, 1, 0, 1] // 6 / 12 = 50%
+    };
+
+    const bottlenecks = {
+      '1': {
+        title: 'Pattern: Precision ML + Workflow Automation (-40% Unit Cost)',
+        body: 'Pair predictive machine learning with targeted LLMs inside high-volume compliance or invoice workflows to strip out false positives before human review—tracking exact cost per unit processed.'
+      },
+      '2': {
+        title: 'Pattern: Domain Intelligence (SpectrumIQ & Cash Flow Intelligence)',
+        body: 'Anchor models directly on proprietary financial & treasury data instead of generic prompts—driving up to 80–90% faster document research and cash categorization while keeping internal audit trails intact.'
+      },
+      '3': {
+        title: 'Pattern: ML Alert Triage + Human Gate (2x Volume, -21% Fraud)',
+        body: 'Let ML score anomalies across payments and transactions to double throughput and halve manual checks—while requiring experienced human sign-off before funds move or regulatory filings leave.'
+      }
+    };
+
+    const gates = [
+      { idx: 0, title: '1. Hard Unit KPI Locked', desc: 'Tied to cost per invoice/KYC check, cycle time, or fraud drop—not soft "hours saved."', action: 'Replace "hours saved" estimates with a verifiable unit-cost or error-rate baseline.' },
+      { idx: 1, title: '2. High-Volume Bottleneck ("50 That Matter")', desc: 'Targets a core high-volume workflow rather than 1 of 30 scattered pilot toys.', action: 'Cut low-impact pilot sprawl and concentrate budget on 2–3 high-volume bottlenecks.' },
+      { idx: 2, title: '3. Opt-In Voluntary Adoption Tested', desc: 'Staff adopt voluntarily on workflow merit (no mandatory seat quotas).', action: 'Test voluntary opt-in adoption before committing to enterprise-wide seat licenses.' },
+      { idx: 3, title: '4. Proprietary Security Perimeter', desc: 'Models sit behind internal security perimeter with zero public data leakage.', action: 'Require swappable model routing inside your firm’s own data security boundary.' },
+      { idx: 4, title: '5. Unverified External Agents Blocked', desc: 'Third-party consumer agents cannot access accounts or create liability-transfer risk.', action: 'Block unverified external AI agents from direct account or ERP write access.' },
+      { idx: 5, title: '6. Mandatory Human Sign-Off Gate', desc: 'Humans retain final approval before funds move or regulatory filings leave.', action: 'Enforce strict human sign-off gates on every cash movement and regulatory filing.' }
+    ];
+
+    const fmtUsd = (n) => `${n < 0 ? '-$' : '$'}${Math.round(Math.abs(n)).toLocaleString('en-US')}`;
+    const fmtNum = (n) => Math.round(n).toLocaleString('en-US');
+
+    function updateROI() {
+      const soft = state.staff * state.hrs * 48 * state.rate;
+      const gross = state.vol * 12 * state.unit * (state.pct / 100);
+      const net = gross - state.spend;
+      const paybackMos = gross > 0 ? (state.spend / (gross / 12)) : 0;
+
+      document.getElementById('out-staff').textContent = `${state.staff} staff`;
+      document.getElementById('out-hrs').textContent = `${state.hrs} hrs/wk`;
+      document.getElementById('out-rate').textContent = `$${state.rate} / hr`;
+      document.getElementById('out-vol').textContent = `${fmtNum(state.vol)} / mo`;
+      document.getElementById('out-unit').textContent = `$${state.unit.toFixed(2)}`;
+      document.getElementById('out-spend').textContent = fmtUsd(state.spend);
+      document.getElementById('out-pct').textContent = `${state.pct}%`;
+
+      document.getElementById('kpi-soft').textContent = fmtUsd(soft);
+      document.getElementById('kpi-net').textContent = fmtUsd(net);
+      document.getElementById('kpi-gross').textContent = fmtUsd(gross);
+      document.getElementById('kpi-payback').textContent = gross > 0 ? `${paybackMos.toFixed(1)} mos` : 'N/A';
+      document.getElementById('tab-pill-net').textContent = `${fmtUsd(net)} net`;
+
+      const maxVal = Math.max(soft, gross, state.spend, 1);
+      document.getElementById('svg-lbl-soft').textContent = fmtUsd(soft);
+      document.getElementById('svg-lbl-gross').textContent = fmtUsd(gross);
+      document.getElementById('svg-lbl-spend').textContent = fmtUsd(state.spend);
+      document.getElementById('svg-bar-soft').setAttribute('width', Math.max(8, (soft / maxVal) * 480).toFixed(1));
+      document.getElementById('svg-bar-gross').setAttribute('width', Math.max(8, (gross / maxVal) * 480).toFixed(1));
+      document.getElementById('svg-bar-spend').setAttribute('width', Math.max(8, (state.spend / maxVal) * 480).toFixed(1));
+
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.classList.toggle('active', Number(btn.dataset.preset) === state.pct);
+      });
+
+      const bn = bottlenecks[state.bottleneck];
+      document.getElementById('bn-title').textContent = bn.title;
+      document.getElementById('bn-body').textContent = bn.body;
+
+      return { soft, gross, net, paybackMos };
+    }
+
+    function renderGates() {
+      const container = document.getElementById('gates-container');
+      container.innerHTML = '';
+      gates.forEach((g) => {
+        const cur = state.scores[g.idx];
+        const card = document.createElement('div');
+        card.className = 'gate-card';
+        card.innerHTML = `
+          <div class="gate-row">
+            <div style="flex:1 1 280px;">
+              <div class="gate-title">${g.title}</div>
+              <div class="gate-desc">${g.desc}</div>
+            </div>
+            <div class="seg-group">
+              <button type="button" class="seg-opt s0 ${cur === 0 ? 'active' : ''}" data-idx="${g.idx}" data-val="0">Not Met</button>
+              <button type="button" class="seg-opt s1 ${cur === 1 ? 'active' : ''}" data-idx="${g.idx}" data-val="1">Partial</button>
+              <button type="button" class="seg-opt s2 ${cur === 2 ? 'active' : ''}" data-idx="${g.idx}" data-val="2">Verified</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      container.querySelectorAll('.seg-opt').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.scores[Number(btn.dataset.idx)] = Number(btn.dataset.val);
+          renderGates();
+          updateScorer();
+        });
+      });
+    }
+
+    function updateScorer() {
+      const total = state.scores.reduce((a, b) => a + b, 0);
+      const pct = Math.round((total / 12) * 100);
+      const CIRC = 326.73;
+
+      document.getElementById('sc-pct').textContent = `${pct}%`;
+      document.getElementById('sc-pts').textContent = `${total} / 12 pts`;
+      document.getElementById('tab-pill-score').textContent = `${pct}%`;
+
+      const arc = document.getElementById('sc-arc');
+      arc.setAttribute('stroke-dashoffset', (CIRC * (1 - pct / 100)).toFixed(2));
+
+      const tier = document.getElementById('sc-tier');
+      const summary = document.getElementById('sc-summary');
+      if (pct >= 80) {
+        arc.setAttribute('stroke', '#0F766E');
+        tier.textContent = 'One of the "50 That Matter"';
+        tier.style.background = '#CCFBF1';
+        tier.style.color = '#0F766E';
+        summary.textContent = 'Strong auditable unit metrics, earned voluntary adoption, and uncompromising human & perimeter gates.';
+      } else if (pct >= 50) {
+        arc.setAttribute('stroke', '#D97706');
+        tier.textContent = 'Needs Control Gates';
+        tier.style.background = '#FEF3C7';
+        tier.style.color = '#92400E';
+        summary.textContent = 'Unit math may look promising, but missing opt-in demand or perimeter gates expose the business case to audit risk.';
+      } else {
+        arc.setAttribute('stroke', '#B91C1C');
+        tier.textContent = 'Pilot Noise';
+        tier.style.background = '#FEE2E2';
+        tier.style.color = '#991B1B';
+        summary.textContent = 'Fails controller discipline: relies on soft productivity claims without high-volume impact or 10-K safeguards.';
+      }
+
+      const gaps = gates
+        .map((g) => ({ ...g, score: state.scores[g.idx] }))
+        .filter((g) => g.score < 2)
+        .sort((a, b) => a.score - b.score)
+        .slice(0, 3);
+
+      const listEl = document.getElementById('priority-list');
+      listEl.innerHTML = '';
+      if (gaps.length === 0) {
+        listEl.innerHTML = '<li><span class="num">✓</span><span>All 6 controller &amp; 10-K gates verified. Ready for quarterly ROI audit review.</span></li>';
+      } else {
+        gaps.forEach((g, idx) => {
+          const li = document.createElement('li');
+          li.innerHTML = `<span class="num">0${idx + 1}</span><span>${g.action}</span>`;
+          listEl.appendChild(li);
+        });
+      }
+
+      return { total, pct, tierText: tier.textContent, gaps };
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    [
+      ['in-staff', 'staff'],
+      ['in-hrs', 'hrs'],
+      ['in-rate', 'rate'],
+      ['in-vol', 'vol'],
+      ['in-unit', 'unit'],
+      ['in-spend', 'spend'],
+      ['in-pct', 'pct']
+    ].forEach(([id, key]) => {
+      document.getElementById(id).addEventListener('input', (e) => {
+        state[key] = Number(e.target.value);
+        updateROI();
+      });
+    });
+
+    document.querySelectorAll('.preset-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.pct = Number(btn.dataset.preset);
+        document.getElementById('in-pct').value = state.pct;
+        updateROI();
+      });
+    });
+
+    document.querySelectorAll('.b-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.bottleneck = btn.dataset.bn;
+        document.querySelectorAll('.b-btn').forEach((b) => b.classList.toggle('active', b === btn));
+        updateROI();
+      });
+    });
+
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach((b) => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.panel-section').forEach((sec) => sec.classList.toggle('active', sec.id === target));
+      });
+    });
+
+    document.getElementById('btn-copy').addEventListener('click', async () => {
+      const roi = updateROI();
+      const sc = updateScorer();
+      const gapLines = sc.gaps.length
+        ? sc.gaps.map((g, i) => `  ${i + 1}. ${g.action}`).join('\n')
+        : '  All 6 controller & 10-K gates verified.';
+      const memo = [
+        'CONTROLLER AI ROI AUDIT MEMO (JPMorganChase Playbook)',
+        '-----------------------------------------------------------------',
+        `Uncredited Soft Paper Claim: ${fmtUsd(roi.soft)} (${state.staff} staff x ${state.hrs} hrs/wk x 48 wks x $${state.rate}/hr)`,
+        `Operational Baseline: ${fmtNum(state.vol)} txns/mo x $${state.unit.toFixed(2)}/unit x ${state.pct}% reduction`,
+        `Credited Gross Savings: ${fmtUsd(roi.gross)}/yr | Annual Spend: ${fmtUsd(state.spend)}/yr`,
+        `Net Hard P&L ROI: ${fmtUsd(roi.net)}/yr (Payback: ${roi.gross > 0 ? roi.paybackMos.toFixed(1) + ' mos' : 'N/A'})`,
+        `"50 That Matter" Control Score: ${sc.pct}% (${sc.total}/12 pts) — Verdict: ${sc.tierText}`,
+        'Required Action Items:',
+        gapLines
+      ].join('\n');
+
+      try {
+        await navigator.clipboard.writeText(memo);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = memo;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      showToast('Controller Audit Memo copied to clipboard');
+    });
+
+    document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      state.staff = 150; state.hrs = 4; state.rate = 80; state.vol = 50000;
+      state.unit = 1.6; state.spend = 120000; state.pct = 40; state.bottleneck = '1';
+      state.scores = [2, 1, 1, 1, 0, 1];
+      document.getElementById('in-staff').value = 150;
+      document.getElementById('in-hrs').value = 4;
+      document.getElementById('in-rate').value = 80;
+      document.getElementById('in-vol').value = 50000;
+      document.getElementById('in-unit').value = 1.6;
+      document.getElementById('in-spend').value = 120000;
+      document.getElementById('in-pct').value = 40;
+      document.querySelectorAll('.b-btn').forEach((b) => b.classList.toggle('active', b.dataset.bn === '1'));
+      updateROI();
+      renderGates();
+      updateScorer();
+      showToast('Audit calculator & scorer reset to defaults');
+    });
+
+    updateROI();
+    renderGates();
+    updateScorer();
+  </script>
+</body>
+</html>
